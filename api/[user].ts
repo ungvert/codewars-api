@@ -13,7 +13,7 @@ export default async (req: NowRequest, res: NowResponse) => {
     return;
   }
 
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  //   res.setHeader("Access-Control-Allow-Origin", "*");
 
   const fetchUser = async (userName: string) => {
     try {
@@ -30,7 +30,7 @@ export default async (req: NowRequest, res: NowResponse) => {
   };
 
   const axiosResponse = await fetchUser(user);
-  console.log("axiosResponse ", axiosResponse);
+  //   console.log("axiosResponse ", axiosResponse.data);
 
-  res.json({ axiosResponse });
+  res.json({ data: axiosResponse.data });
 };

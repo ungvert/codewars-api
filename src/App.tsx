@@ -38,10 +38,14 @@ let theme = createMuiTheme({
 });
 theme = responsiveFontSizes(theme);
 
-const USER_SERVICE_URL = "https://www.codewars.com/api/v1/users/";
+// const USER_SERVICE_URL = "https://www.codewars.com/api/v1/users/";
+const USER_SERVICE_URL = "https://api.github.com/users/";
 
 function App() {
-  const [data, setData] = useState({ users: [], isFetching: false });
+  const [data, setData] = useState({
+    users: [{ avatar_url: null }],
+    isFetching: false,
+  });
 
   async function handleFetchClick(userName: string) {
     await fetchUser(userName);
@@ -57,10 +61,12 @@ function App() {
         baseURL: USER_SERVICE_URL,
         // headers: { "X-Requested-With": "XMLHttpRequest" },
       });
-      setData({ users: response.data, isFetching: false });
+      console.log("response", response);
+
+      setData({ users: [response.data], isFetching: false });
     } catch (e) {
       console.log(e);
-      setData({ users: data.users, isFetching: false });
+      setData({ users: [], isFetching: false });
     }
   };
 
