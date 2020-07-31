@@ -38,7 +38,7 @@ let theme = createMuiTheme({
 });
 theme = responsiveFontSizes(theme);
 
-const USER_SERVICE_URL = "http://www.codewars.com/api/v1/users/";
+const USER_SERVICE_URL = "https://www.codewars.com/api/v1/users/";
 
 function App() {
   const [data, setData] = useState({ users: [], isFetching: false });
@@ -55,7 +55,7 @@ function App() {
 
       const response = await axios.get(userName, {
         baseURL: USER_SERVICE_URL,
-        headers: { "X-Requested-With": "XMLHttpRequest" },
+        // headers: { "X-Requested-With": "XMLHttpRequest" },
       });
       setData({ users: response.data, isFetching: false });
     } catch (e) {
