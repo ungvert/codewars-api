@@ -5,11 +5,11 @@ const USER_SERVICE_URL = "https://www.codewars.com/api/v1/users/";
 
 export default async (req: NowRequest, res: NowResponse) => {
   const {
-    query: { name },
+    query: { user },
   } = req;
 
-  if (Array.isArray(name)) {
-    res.json({ error: "Arrays in parameter `name` not supported" });
+  if (Array.isArray(user)) {
+    res.json({ error: "Arrays in parameter `user` not supported" });
     return;
   }
 
@@ -29,11 +29,8 @@ export default async (req: NowRequest, res: NowResponse) => {
     }
   };
 
-  const axiosResponse = await fetchUser(name);
+  const axiosResponse = await fetchUser(user);
   console.log("axiosResponse ", axiosResponse);
 
   res.json({ axiosResponse });
-  //   console.log("data ", JSON.stringify(data));
-
-  //   res.json({ name: "John", email: "john@example.com" });
 };
