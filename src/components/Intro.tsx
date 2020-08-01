@@ -1,13 +1,21 @@
 /** @jsx jsx */
-import { jsx } from "@emotion/core";
+import { jsx, css } from "@emotion/core";
 
 import Typography from "@material-ui/core/Typography";
 
 import LinkOutlinedIcon from "@material-ui/icons/LinkOutlined";
 import Link from "@material-ui/core/Link";
 import { Box } from "@material-ui/core";
+import { useTheme } from "@material-ui/core/styles";
 
 function Intro() {
+  const theme = useTheme();
+
+  const styles = {
+    icon: css`
+      color: ${theme.palette.grey[500]};
+    `,
+  };
   return (
     <Box>
       <Box my={2}>
@@ -24,33 +32,45 @@ function Intro() {
       </Box>
 
       <Box display="flex" flexDirection="column" alignItems="flex-start">
-        <Link href="#">
+        <Link
+          href="https://github.com/ungvert/codewars-api"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <Box
             display="inline-flex"
             alignItems="center"
             color="grey.700"
             component="span"
           >
-            <Typography variant="subtitle1" component="span">
+            <Typography variant="subtitle2" component="span">
               Исходный код
             </Typography>
-            <LinkOutlinedIcon />
+            <LinkOutlinedIcon css={styles.icon} />
           </Box>
         </Link>
-        <Link href="#">
+        <Link
+          href="https://dev.codewars.com/#rest-api"
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+        >
           <Box display="inline-flex" alignItems="center" color="grey.700">
-            <Typography variant="subtitle1" component="span">
+            <Typography variant="subtitle2" component="span">
               Codewars API
             </Typography>
-            <LinkOutlinedIcon />
+            <LinkOutlinedIcon css={styles.icon} />
           </Box>
         </Link>
-        <Link href="#">
+        <Link
+          href="https://github.com/Codewars/codewars.com/wiki/Honor-&-Ranks"
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+        >
           <Box display="inline-flex" alignItems="center" color="grey.700">
-            <Typography variant="h6" component="span">
+            <Typography variant="subtitle2" component="span">
               Codewars Wiki
             </Typography>
-            <LinkOutlinedIcon />
+            <LinkOutlinedIcon css={styles.icon} />
           </Box>
         </Link>
       </Box>
