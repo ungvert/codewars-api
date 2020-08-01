@@ -1,66 +1,66 @@
 /** @jsx jsx */
-import { jsx, css } from "@emotion/core";
+import { jsx } from "@emotion/core";
 import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
 import { Box, TextField, CircularProgress } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import { useState } from "react";
 
 type CallbackFunction = (userName: string) => void;
 
 type Props = {
   handleFetchClick: CallbackFunction;
   isFetchingData: boolean;
+  fetchingError: string | null;
+  userName: string;
+  setUserName: React.Dispatch<React.SetStateAction<string>>;
 };
-function UsernameForm({ handleFetchClick, isFetchingData }: Props) {
-  const [userName, setUserName] = useState("ungvert");
+function UsernameForm({
+  handleFetchClick,
+  isFetchingData,
+  fetchingError,
+  userName,
+  setUserName,
+}: Props) {
   return (
-    <Box my={3}>
+    <Box mt={3}>
       <Typography variant="h4" component="h2" gutterBottom>
         Введите имя\ссылку на профиль в Codewars:
       </Typography>
 
-      <Box display="flex" alignItems="center" color="grey.700" mt={2}>
-        <Box mr={1}>
+      <Box display="flex" alignItems="flex-start" color="grey.700" mt={2}>
+        <Box mr={1} flexGrow={1}>
           <TextField
+            fullWidth
             id="outlined-basic"
             label="Профиль в Codewars"
             variant="outlined"
             size="small"
             value={userName}
             onChange={(e) => setUserName(e.currentTarget.value)}
+            error={Boolean(fetchingError)}
+            helperText={
+              Boolean(fetchingError)
+                ? `Не удалось загрузить данные этого пользователя`
+                : ""
+            }
           />
         </Box>
 
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={(e) => {
-            if (userName.length) {
-              handleFetchClick(userName);
-            }
-          }}
-          disabled={isFetchingData}
-        >
-          {isFetchingData && <CircularProgress size={20} color="secondary" />}
-          {!isFetchingData && 'Загрузить'}
-        </Button>
+        <Box flexShrink={0}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={(e) => {
+              if (userName.length) {
+                handleFetchClick(userName);
+              }
+            }}
+            disabled={isFetchingData}
+          >
+            {isFetchingData && <CircularProgress size={20} color="secondary" />}
+            {!isFetchingData && "Загрузить"}
+          </Button>
+        </Box>
       </Box>
-      <Typography variant="h6" component="h2" gutterBottom>
-        Например
-        <Link
-          href="#"
-          underline="none"
-          css={css`
-            text-decoration-style: none;
-            border-bottom: 1px dashed currentColor;
-            display: inline-block;
-            line-height: 1.3;
-          `}
-        >
-          ungvert
-        </Link>
-      </Typography>
     </Box>
   );
 }

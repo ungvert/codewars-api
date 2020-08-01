@@ -15,7 +15,7 @@ import Paper from "@material-ui/core/Paper";
 
 const useStyles = makeStyles({
   table: {
-    // minWidth: 650,
+    maxWidth: 600,
   },
 });
 
@@ -26,13 +26,15 @@ function SimpleTable({ rows }: SimpleTableProps) {
   const classes = useStyles();
 
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="simple table">
+    <TableContainer component={Paper} className={classes.table}>
+      <Table size="small" aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell>Уровень каты</TableCell>
             <TableCell align="right">Опыт за 1 кату</TableCell>
-            <TableCell align="right">Количество для нового уровня</TableCell>
+            <TableCell align="right">
+              Количество кат для нового уровня
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -62,7 +64,7 @@ function Profile({
   expTable,
 }: ProfileProps) {
   return (
-    <Box my={3}>
+    <Box mt={5} mb={4}>
       <Typography variant="h4" component="h2">
         Уровень {profileName}
       </Typography>

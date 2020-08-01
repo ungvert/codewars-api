@@ -1,13 +1,20 @@
 /** @jsx jsx */
-import { jsx } from "@emotion/core";
+import { jsx, css } from "@emotion/core";
+import { ThemeProvider } from "emotion-theming";
 
-import "fontsource-ubuntu/cyrillic-300-normal.css";
+import { MouseEvent } from "react";
 
 import {
   createMuiTheme,
-  ThemeProvider,
+  ThemeProvider as MuiThemeProvider,
   responsiveFontSizes,
+  StylesProvider,
 } from "@material-ui/core/styles";
+import CssBaseline from "@material-ui/core/CssBaseline";
+
+import Typography from "@material-ui/core/Typography";
+import Link from "@material-ui/core/Link";
+import { Box } from "@material-ui/core";
 
 import { Container } from "@material-ui/core";
 import Intro from "./components/Intro";
@@ -16,6 +23,7 @@ import Profile from "./components/Profile";
 
 import { useState } from "react";
 import axios from "axios";
+import "fontsource-ubuntu/cyrillic-300-normal.css";
 
 let theme = createMuiTheme({
   typography: {
@@ -80,49 +88,32 @@ function App() {
     userApiData: null,
     preparedUserData: null,
     isFetching: false,
+    fetchingError: null,
   });
 
-  async function handleFetchClick(userName: string) {
-    setData({ userApiData: null, preparedUserData: null, isFetching: true });
+  const [userName, setUserName] = useState("");
 
-    const userData = (await fetchUser(userName)) as UserAPIData;
+  async function handleFetchClick(userName: string) {
+    setData({
+      userApiData: null,
+      preparedUserData: null,
+      isFetching: true,
+      fetchingError: null,
+    });
+
+    const [fetchingError, userData] = (await fetchUser(userName)) as [
+      string | null,
+      UserAPIData
+    ];
+
+    console.log("userData", userData);
 
     setData({
       userApiData: userData,
       preparedUserData: prepareData(userData),
       isFetching: false,
+      fetchingError,
     });
-  }
-
-  function prepareData(userData: UserAPIData) {
-    if (userData) {
-      // prepare which profiles we will load
-      type ProfilesRaw = {
-        name: string;
-        data: LanguageData;
-      };
-      const profilesData: ProfilesRaw[] = [];
-      profilesData.push({ name: "общий", data: userData.ranks.overall });
-      Object.entries(userData.ranks.languages).forEach(
-        ([languageName, languageData]) => {
-          profilesData.push({ name: languageName, data: languageData });
-        }
-      );
-
-      // enrich\transform each profile with new calculated data
-      let preparedProfiles: ProfileProps[] = [];
-      profilesData.forEach((profile) => {
-        const { name: profileName, data: profileRawData } = profile;
-        const profileData = prepareProfileData(profileRawData);
-        if (profileData) {
-          preparedProfiles.push({ profileName, ...profileData });
-        }
-      });
-
-      return preparedProfiles;
-    }
-
-    return null;
   }
 
   function prepareProfileData(profileData: LanguageData) {
@@ -163,33 +154,117 @@ function App() {
     return null;
   }
 
+  function prepareData(userData: UserAPIData) {
+    if (userData) {
+      // prepare which profiles we will load
+      type ProfilesRaw = {
+        name: string;
+        data: LanguageData;
+      };
+      const profilesData: ProfilesRaw[] = [];
+      profilesData.push({ name: "общий", data: userData.ranks.overall });
+      Object.entries(userData.ranks.languages).forEach(
+        ([languageName, languageData]) => {
+          profilesData.push({ name: languageName, data: languageData });
+        }
+      );
+
+      // enrich\transform each profile with new calculated data
+      let preparedProfiles: ProfileProps[] = [];
+      profilesData.forEach((profile) => {
+        const { name: profileName, data: profileRawData } = profile;
+        const profileData = prepareProfileData(profileRawData);
+        if (profileData) {
+          preparedProfiles.push({ profileName, ...profileData });
+        }
+      });
+
+      return preparedProfiles;
+    }
+
+    return null;
+  }
+
   const fetchUser = async (userName: string) => {
     try {
       const response = await axios.get(userName, {
         baseURL: USER_SERVICE_URL,
       });
-      return response.data;
+      return [null, response.data];
     } catch (e) {
       console.warn(e);
+      return [e.message, null];
     }
-
-    return null;
   };
 
+  function InputExample() {
+    return (
+      <Box display="flex" alignItems="flex-start">
+        <Typography variant="subtitle2" component="p">
+          Например
+        </Typography>
+
+        <Box ml={1}>
+          <Typography variant="subtitle2" component="p">
+            <Link
+              onClick={(e: MouseEvent) => {
+                e.preventDefault();
+                setUserName("ungvert");
+              }}
+              underline="none"
+              css={css`
+                text-decoration-style: none;
+                border-bottom: 1px dashed currentColor;
+                display: inline-block;
+                line-height: 1.3;
+              `}
+            >
+              ungvert
+            </Link>
+          </Typography>
+        </Box>
+      </Box>
+    );
+  }
+
   return (
-    <ThemeProvider theme={theme}>
-      <Container>
-        <Intro />
+    <StylesProvider injectFirst>
+      <MuiThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Container
+            css={(theme) => css`
+              padding: 0 8px;
+              max-width: 900px;
 
-        <UsernameForm
-          handleFetchClick={handleFetchClick}
-          isFetchingData={data.isFetching}
-        />
+              ${theme.breakpoints.up("sm")} {
+                padding: 0 ${theme.spacing(3)}px;
+              }
+              ${theme.breakpoints.up("md")} {
+                padding: 0 ${theme.spacing(5)}px;
+              }
+            `}
+          >
+            <Intro />
 
-        {data.preparedUserData &&
-          data.preparedUserData.map((p) => <Profile {...p} />)}
-      </Container>
-    </ThemeProvider>
+            <UsernameForm
+              handleFetchClick={handleFetchClick}
+              isFetchingData={data.isFetching}
+              fetchingError={data.fetchingError}
+              userName={userName}
+              setUserName={setUserName}
+            />
+
+            {!Boolean(userName) && <InputExample />}
+
+            {data.preparedUserData &&
+              data.preparedUserData.map((props) => (
+                <Profile key={props.profileName} {...props} />
+              ))}
+          </Container>
+        </ThemeProvider>
+      </MuiThemeProvider>
+    </StylesProvider>
   );
 }
 
