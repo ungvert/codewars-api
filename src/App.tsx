@@ -89,6 +89,7 @@ function App() {
     preparedUserData: null,
     isFetching: false,
     fetchingError: null,
+    requestedUser: null,
   });
 
   const [userName, setUserName] = useState("");
@@ -99,6 +100,7 @@ function App() {
       preparedUserData: null,
       isFetching: true,
       fetchingError: null,
+      requestedUser: String(userName),
     });
 
     const [fetchingError, userData] = (await fetchUser(userName)) as [
@@ -106,13 +108,12 @@ function App() {
       UserAPIData
     ];
 
-    console.log("userData", userData);
-
     setData({
       userApiData: userData,
       preparedUserData: prepareData(userData),
       isFetching: false,
       fetchingError,
+      requestedUser: String(userName),
     });
   }
 
@@ -253,6 +254,7 @@ function App() {
               fetchingError={data.fetchingError}
               userName={userName}
               setUserName={setUserName}
+              requestedUser={data.requestedUser}
             />
 
             {!Boolean(userName) && <InputExample />}

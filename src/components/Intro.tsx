@@ -17,16 +17,19 @@ function Intro() {
     `,
   };
   return (
-    <Box>
-      <Box my={2}>
+    <Box mt={7}>
+      <Box my={3}>
         <Typography variant="h3" component="h1">
           Узнай сколько кат нужно выполнить чтобы повысить уровень в Codewars
         </Typography>
-        <Box my={1}>
+        <Box mt={3}>
           <Typography variant="h6" component="p">
             Это веб приложение использует публичный Codewars API, чтобы получить
-            данные профиля. Для расчета опыта используются данные из Codewars
-            Wiki.
+            данные профиля.
+          </Typography>
+
+          <Typography variant="h6" component="p">
+            Для расчета опыта используются данные из Codewars Wiki.
           </Typography>
         </Box>
       </Box>

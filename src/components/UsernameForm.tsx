@@ -3,6 +3,7 @@ import { jsx } from "@emotion/core";
 import Typography from "@material-ui/core/Typography";
 import { Box, TextField, CircularProgress } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
+import { KeyboardEvent, useState } from "react";
 
 type CallbackFunction = (userName: string) => void;
 
@@ -12,6 +13,7 @@ type Props = {
   fetchingError: string | null;
   userName: string;
   setUserName: React.Dispatch<React.SetStateAction<string>>;
+  requestedUser: string | null;
 };
 function UsernameForm({
   handleFetchClick,
@@ -19,7 +21,18 @@ function UsernameForm({
   fetchingError,
   userName,
   setUserName,
+  requestedUser,
 }: Props) {
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === "Enter") {
+      if (userName.length) {
+        handleFetchClick(userName);
+      } else setEmptyInputAttempt(true);
+    }
+  };
+
+  const [emptyInputAttempt, setEmptyInputAttempt] = useState(false);
+
   return (
     <Box mt={3}>
       <Typography variant="h4" component="h2" gutterBottom>
@@ -35,13 +48,21 @@ function UsernameForm({
             variant="outlined"
             size="small"
             value={userName}
-            onChange={(e) => setUserName(e.currentTarget.value)}
-            error={Boolean(fetchingError)}
+            onChange={(e) => {
+              setEmptyInputAttempt(false);
+              setUserName(e.currentTarget.value);
+            }}
+            error={
+              (Boolean(fetchingError) && String(requestedUser) === userName) ||
+              (emptyInputAttempt && userName.length === 0)
+            }
+            onFocus={(e) => setEmptyInputAttempt(false)}
             helperText={
-              Boolean(fetchingError)
-                ? `Не удалось загрузить данные этого пользователя`
+              Boolean(fetchingError) && String(requestedUser) === userName
+                ? `Не удалось загрузить данные пользователя`
                 : ""
             }
+            onKeyDown={handleKeyDown}
           />
         </Box>
 
@@ -52,7 +73,8 @@ function UsernameForm({
             onClick={(e) => {
               if (userName.length) {
                 handleFetchClick(userName);
-              }
+              } else setEmptyInputAttempt(true);
+              console.log("emptyInputAttempt", emptyInputAttempt);
             }}
             disabled={isFetchingData}
           >

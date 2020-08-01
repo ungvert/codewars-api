@@ -46,6 +46,7 @@ type APIData = {
   preparedUserData: ProfileProps[] | null;
   isFetching: boolean;
   fetchingError: string | null;
+  requestedUser: string | null;
 };
 
 type ProfileTableRow = {

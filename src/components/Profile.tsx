@@ -90,7 +90,7 @@ function Profile({
         </Typography>
 
         <Box color="grey.700">
-          <Typography variant="h6" component="p">
+          <Typography variant="subtitle2" component="p">
             Сейчас у вас {exp} опыта. Новый уровень начинается с {expNextRank}{" "}
             опыта.
           </Typography>
