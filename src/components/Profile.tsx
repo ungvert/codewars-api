@@ -1,13 +1,9 @@
 /** @jsx jsx */
-import { jsx, css } from "@emotion/core";
+import { jsx } from "@emotion/core";
 
 import Typography from "@material-ui/core/Typography";
-
-import LinkOutlinedIcon from "@material-ui/icons/LinkOutlined";
-import Link from "@material-ui/core/Link";
-import { Box, Container, TextField } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import LinearProgress from "@material-ui/core/LinearProgress";
-
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -16,7 +12,6 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles({
   table: {
@@ -24,25 +19,10 @@ const useStyles = makeStyles({
   },
 });
 
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number
-) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("8 kyu", 159, 6.0, 24, 4.0),
-  createData("7 kyu", 237, 9.0, 37, 4.3),
-  createData("6 kyu", 262, 16.0, 24, 6.0),
-  createData("5 kyu", 305, 3.7, 67, 4.3),
-  createData("4 kyu", 356, 16.0, 49, 3.9),
-];
-
-function SimpleTable() {
+type SimpleTableProps = {
+  rows: ProfileTableRow[];
+};
+function SimpleTable({ rows }: SimpleTableProps) {
   const classes = useStyles();
 
   return (
@@ -57,12 +37,12 @@ function SimpleTable() {
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <TableRow key={row.name}>
+            <TableRow key={row.kataRank}>
               <TableCell component="th" scope="row">
-                {row.name}
+                {row.kataRank}
               </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
+              <TableCell align="right">{row.expForKata}</TableCell>
+              <TableCell align="right">{row.katasForLevelUp}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -71,44 +51,57 @@ function SimpleTable() {
   );
 }
 
-function Profile() {
+function Profile({
+  profileName,
+  rank,
+  rankNext,
+  exp,
+  expNextRank,
+  expForLevelUp,
+  expForLevelUpPercentage,
+  expTable,
+}: ProfileProps) {
   return (
     <Box my={3}>
       <Typography variant="h4" component="h2">
-        Уровень профиля
+        Уровень {profileName}
       </Typography>
 
       <Box display="flex" alignItems="center" my={2}>
         <Typography variant="h6" component="span">
-          7 kyu
+          {rank}
         </Typography>
         <Box flexGrow={1} ml={1} mr={2}>
-          <LinearProgress value={90} variant="determinate" />
+          <LinearProgress
+            value={expForLevelUpPercentage}
+            variant="determinate"
+          />
         </Box>
         <Typography variant="h6" component="span">
-          6 kyu
+          {rankNext}
         </Typography>
       </Box>
 
       <Box my={2}>
         <Typography variant="h6" component="p">
-          До нового уровня: 10 опыта.
+          До нового уровня: {expForLevelUp} опыта.
         </Typography>
 
         <Box color="grey.700">
           <Typography variant="h6" component="p">
-            Сейчас у вас 633 опыта. Новый уровень начинается с 643 опыта.
+            Сейчас у вас {exp} опыта. Новый уровень начинается с {expNextRank}{" "}
+            опыта.
           </Typography>
         </Box>
 
         <Box my={1}>
           <Typography variant="h6" component="p">
-            Чтобы повысить уровень профиля нужно решить:
+            Чтобы повысить уровень {profileName} нужно решить:
           </Typography>
         </Box>
 
         <Box my={2}>
-          <SimpleTable />
+          <SimpleTable rows={expTable} />
         </Box>
       </Box>
     </Box>

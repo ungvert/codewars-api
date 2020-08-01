@@ -2,7 +2,7 @@
 import { jsx, css } from "@emotion/core";
 import Typography from "@material-ui/core/Typography";
 import Link from "@material-ui/core/Link";
-import { Box, TextField } from "@material-ui/core";
+import { Box, TextField, CircularProgress } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import { useState } from "react";
 
@@ -10,8 +10,9 @@ type CallbackFunction = (userName: string) => void;
 
 type Props = {
   handleFetchClick: CallbackFunction;
+  isFetchingData: boolean;
 };
-function UsernameForm({ handleFetchClick }: Props) {
+function UsernameForm({ handleFetchClick, isFetchingData }: Props) {
   const [userName, setUserName] = useState("ungvert");
   return (
     <Box my={3}>
@@ -30,6 +31,7 @@ function UsernameForm({ handleFetchClick }: Props) {
             onChange={(e) => setUserName(e.currentTarget.value)}
           />
         </Box>
+
         <Button
           variant="contained"
           color="primary"
@@ -38,8 +40,10 @@ function UsernameForm({ handleFetchClick }: Props) {
               handleFetchClick(userName);
             }
           }}
+          disabled={isFetchingData}
         >
-          Загрузить
+          {isFetchingData && <CircularProgress size={20} color="secondary" />}
+          {!isFetchingData && 'Загрузить'}
         </Button>
       </Box>
       <Typography variant="h6" component="h2" gutterBottom>
