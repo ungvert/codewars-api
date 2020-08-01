@@ -26,5 +26,5 @@ export default async (req: NowRequest, res: NowResponse) => {
 
   const axiosResponse = await fetchUser(user);
 
-  res.json({ data: { ...axiosResponse.data } });
+  res.json({ ...axiosResponse.data });
 };
