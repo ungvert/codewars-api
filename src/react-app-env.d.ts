@@ -65,3 +65,23 @@ type ProfileProps = {
   expForLevelUpPercentage: number;
   expTable: ProfileTableRow[];
 };
+
+interface Bins {
+  bin: number;
+  bins: Bin[];
+}
+
+type Bin = {
+  bin: number;
+  count: number;
+  date: string;
+};
+
+
+type CodeChallengesApiData = {
+  id: string;
+  name: string;
+  slug: string;
+  completedLanguages: string[];
+  completedAt: string;
+};
