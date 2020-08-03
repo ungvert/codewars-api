@@ -14,7 +14,11 @@ const fetchData = async (userName: string, baseURL: string) => {
     });
 
     if (response.hasOwnProperty("data")) {
-      return [null, response.data];
+      if (response.data.hasOwnProperty("error")) {
+        return [JSON.stringify(response.data.error), null];
+      } else {
+        return [null, response.data];
+      }
     }
 
     return ["API not returned data", null];
