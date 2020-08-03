@@ -23,7 +23,7 @@ export default async (req: NowRequest, res: NowResponse) => {
     }
   };
 
-  const axiosResponse = await fetchChallenges(user);
+  const axiosResponse = await fetchChallenges(decodeURIComponent(user));
 
   res.json({ ...axiosResponse.data });
 };

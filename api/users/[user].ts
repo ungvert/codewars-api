@@ -23,8 +23,8 @@ export default async (req: NowRequest, res: NowResponse) => {
       res.json({ error: e });
     }
   };
-
-  const axiosResponse = await fetchUser(user);
+  
+  const axiosResponse = await fetchUser(decodeURIComponent(user));
 
   res.json({ ...axiosResponse.data });
 };
