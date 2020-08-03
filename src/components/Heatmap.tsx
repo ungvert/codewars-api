@@ -25,11 +25,9 @@ function Heatmap({
 }: HeatmapProps) {
   const theme = useTheme();
 
-  const cool1 = theme.palette.grey[50];
+  const cool1 = theme.palette.grey[100];
   const cool2 = theme.palette.primary.main;
   const background = theme.palette.background.default;
-  type CountFunction = (idx: number, number: number) => number;
-  type BinFunction = (idx: number, number?: number) => number;
 
   function max<Datum>(data: Datum[], value: (d: Datum) => number): number {
     return Math.max(...data.map(value));
@@ -68,18 +66,12 @@ function Heatmap({
   yScale.range([yMax, 0]);
 
   return width < 10 ? null : (
-    // <div>
-    <svg
-      width={width}
-      height={height}
-      //   style={{ transform: "translateX(40px)" }}
-    >
+    <svg width={width} height={height}>
       <rect
         x={0}
         y={0}
         width={width}
         height={height}
-        //   ry={2}
         rx={2}
         ry={2}
         fill={background}
@@ -91,7 +83,6 @@ function Heatmap({
           xScale={xScale}
           yScale={yScale}
           colorScale={rectColorScale}
-          //   opacityScale={opacityScale}
           binWidth={binWidth}
           binHeight={binWidth}
           gap={3}
@@ -107,7 +98,6 @@ function Heatmap({
                   x={bin.x}
                   y={bin.y}
                   fill={bin.color}
-                  // fillOpacity={bin.opacity}
                   rx={2}
                   ry={2}
                   style={{
@@ -127,7 +117,6 @@ function Heatmap({
         </HeatmapRect>
       </Group>
     </svg>
-    // </div>
   );
 }
 export default Heatmap;

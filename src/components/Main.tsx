@@ -133,7 +133,7 @@ function Main() {
             css={css`
               overflow: hidden;
               align-items: flex-end;
-              ${theme.breakpoints.up("md")} {
+              ${theme.breakpoints.up("sm")} {
                 align-items: flex-start;
               }
             `}
@@ -141,7 +141,8 @@ function Main() {
             <Heatmap
               // width={256}
               // height={128}
-              width={722}
+            //   width={722} 43
+              width={422}
               height={112}
               binData={data.preparedChallengesData}
               // events={true}

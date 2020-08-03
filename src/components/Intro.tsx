@@ -69,7 +69,8 @@ function Intro() {
     <Box mt={8}>
       <Box my={3}>
         <Typography variant="h3" component="h1">
-          Узнай сколько кат нужно выполнить чтобы повысить уровень в Codewars
+          Узнай сколько кат нужно&nbsp;выполнить чтобы повысить
+          уровень&nbsp;в&nbsp;Codewars
         </Typography>
 
         <Box

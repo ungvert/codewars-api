@@ -201,7 +201,7 @@ function prepareUserChallengesData(
   userChallengesData: ChallengesAPIData | null
 ) {
   if (userChallengesData) {
-    const heatmapBinsLength = 43; //* days in week
+    const heatmapBinsLength = 30; //* days in week
     const heatmapBinsHeight = 7; //* days in week
 
     const { binsForD3: emptyBinsForD3, dateIndex } = generateBins(
