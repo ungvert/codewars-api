@@ -1,7 +1,5 @@
 import { NowRequest, NowResponse } from "@vercel/node";
-import axios from "axios";
-
-const USER_SERVICE_URL = "https://www.codewars.com/api/v1/users/";
+import { fetchUser } from "../_lib/fetchData";
 
 export default async (req: NowRequest, res: NowResponse) => {
   const {
@@ -9,23 +7,13 @@ export default async (req: NowRequest, res: NowResponse) => {
   } = req;
 
   if (Array.isArray(user)) {
-    res.status(500).send(new Error("Arrays as parameter not supported"));
+    res.status(400).send(new Error("Arrays as parameter not supported"));
     return;
   }
 
-  const fetchUser = async (userName: string) => {
-    try {
-      const response = await axios.get(userName, {
-        baseURL: USER_SERVICE_URL,
-      });
-      return [null, response];
-    } catch (e) {
-      return [e, null];
-    }
-  };
-
   console.log("user:", user);
   console.log("decodeURIComponent(user):", decodeURIComponent(user));
+  console.log("encodeURIComponent(user):", encodeURIComponent(user));
 
   const [error, axiosResponse] = await fetchUser(encodeURIComponent(user));
 

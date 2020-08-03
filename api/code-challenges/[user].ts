@@ -7,7 +7,7 @@ export default async (req: NowRequest, res: NowResponse) => {
   } = req;
 
   if (Array.isArray(user)) {
-    res.status(500).send(new Error("Arrays as parameter not supported"));
+    res.status(400).send(new Error("Arrays as parameter not supported"));
     return;
   }
 
