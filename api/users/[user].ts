@@ -27,11 +27,11 @@ export default async (req: NowRequest, res: NowResponse) => {
   const [error, axiosResponse] = await fetchUser(decodeURIComponent(user));
 
   if (error) {
-    res.status(500).send(error);
+    res.json({ error });
   } else {
     if (axiosResponse.hasOwnProperty("data")) {
       res.json({ ...axiosResponse.data });
     }
-    res.status(500).send(new Error("API responded without data"));
+    res.json({ error: "API responded without data" });
   }
 };
