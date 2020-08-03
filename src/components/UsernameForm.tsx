@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx } from "@emotion/core";
+import { jsx, css } from "@emotion/core";
 import Typography from "@material-ui/core/Typography";
 import { Box, TextField, CircularProgress } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
@@ -36,10 +36,18 @@ function UsernameForm({
   return (
     <Box mt={3}>
       <Typography variant="h4" component="h2" gutterBottom>
-        Введите имя\ссылку на профиль в Codewars:
+        Введите имя профиля в Codewars
       </Typography>
 
-      <Box display="flex" alignItems="flex-start" color="grey.700" mt={2}>
+      <Box
+        display="flex"
+        alignItems="flex-start"
+        color="grey.700"
+        mt={3}
+        css={css`
+          max-width: 700px;
+        `}
+      >
         <Box mr={1} flexGrow={1}>
           <TextField
             fullWidth
@@ -74,7 +82,6 @@ function UsernameForm({
               if (userName.length) {
                 handleFetchClick(userName);
               } else setEmptyInputAttempt(true);
-              console.log("emptyInputAttempt", emptyInputAttempt);
             }}
             disabled={isFetchingData}
           >

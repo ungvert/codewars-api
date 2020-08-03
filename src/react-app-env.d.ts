@@ -41,9 +41,11 @@ type UserAPIData = {
   };
 };
 
-type APIData = {
+type AppData = {
   userApiData: UserAPIData | null;
+  challengesData: ChallengesAPIData | null;
   preparedUserData: ProfileProps[] | null;
+  preparedChallengesData: Bins[] | null;
   isFetching: boolean;
   fetchingError: string | null;
   requestedUser: string | null;
@@ -77,11 +79,14 @@ type Bin = {
   date: string;
 };
 
-
-type CodeChallengesApiData = {
+type CodeChallengesDataItem = {
   id: string;
   name: string;
   slug: string;
   completedLanguages: string[];
   completedAt: string;
+};
+
+type ChallengesAPIData = {
+  data: CodeChallengesDataItem[];
 };

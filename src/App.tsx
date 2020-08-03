@@ -41,7 +41,7 @@ function App() {
           <Container
             css={(theme) => css`
               padding: 0 8px;
-              max-width: 950px;
+              max-width: 960px;
               ${theme.breakpoints.up("sm")} {
                 padding: 0 ${theme.spacing(3)}px;
               }

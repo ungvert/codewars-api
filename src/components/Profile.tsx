@@ -15,7 +15,7 @@ import Paper from "@material-ui/core/Paper";
 
 const useStyles = makeStyles({
   table: {
-    maxWidth: 600,
+    maxWidth: 420,
   },
 });
 
@@ -65,7 +65,7 @@ function Profile({
 }: ProfileProps) {
   return (
     <Box mt={5} mb={4}>
-      <Typography variant="h4" component="h2">
+      <Typography variant="h5" component="h2">
         Уровень {profileName}
       </Typography>
 

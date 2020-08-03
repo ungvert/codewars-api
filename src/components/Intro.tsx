@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { jsx, css } from "@emotion/core";
-
+import React from "react";
 import Typography from "@material-ui/core/Typography";
 
 import LinkOutlinedIcon from "@material-ui/icons/LinkOutlined";
@@ -16,25 +16,10 @@ function Intro() {
       color: ${theme.palette.grey[500]};
     `,
   };
-  return (
-    <Box mt={7}>
-      <Box my={3}>
-        <Typography variant="h3" component="h1">
-          Узнай сколько кат нужно выполнить чтобы повысить уровень в Codewars
-        </Typography>
-        <Box mt={3}>
-          <Typography variant="h6" component="p">
-            Это веб приложение использует публичный Codewars API, чтобы получить
-            данные профиля.
-          </Typography>
 
-          <Typography variant="h6" component="p">
-            Для расчета опыта используются данные из Codewars Wiki.
-          </Typography>
-        </Box>
-      </Box>
-
-      <Box display="flex" flexDirection="column" alignItems="flex-start">
+  function Links() {
+    return (
+      <React.Fragment>
         <Link
           href="https://github.com/ungvert/codewars-api"
           target="_blank"
@@ -76,6 +61,39 @@ function Intro() {
             <LinkOutlinedIcon css={styles.icon} />
           </Box>
         </Link>
+      </React.Fragment>
+    );
+  }
+
+  return (
+    <Box mt={8}>
+      <Box my={3}>
+        <Typography variant="h3" component="h1">
+          Узнай сколько кат нужно выполнить чтобы повысить уровень в Codewars
+        </Typography>
+
+        <Box
+          mt={4}
+          display="flex"
+          alignItems="flex-start"
+          justifyContent="flex-start"
+          flexWrap="wrap"
+        >
+          <Box mr={4} mb={2}>
+            <Typography variant="subtitle1" component="p">
+              Это приложение использует публичный Codewars API, чтобы получить
+              данные профиля.
+            </Typography>
+
+            <Typography variant="subtitle1" component="p">
+              Для расчета опыта используются данные из Codewars Wiki.
+            </Typography>
+          </Box>
+
+          <Box display="flex" flexDirection="column" alignItems="flex-start">
+            <Links />
+          </Box>
+        </Box>
       </Box>
     </Box>
   );
