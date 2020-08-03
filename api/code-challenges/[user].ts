@@ -28,12 +28,12 @@ export default async (req: NowRequest, res: NowResponse) => {
   );
 
   if (error) {
-    res.json({ error });
+    res.status(500).send(error);
   } else {
     if (axiosResponse.hasOwnProperty("data")) {
       res.json({ ...axiosResponse.data });
     } else {
-      res.json({ error: "API responded without data" });
+      res.status(500).send(new Error("API responded without data"));
     }
   }
 };
