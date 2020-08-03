@@ -7,7 +7,7 @@ import { Box } from "@material-ui/core";
 import Link from "@material-ui/core/Link";
 import UsernameForm from "./UsernameForm";
 import Profile from "./Profile";
-import SuperExpressive from "super-expressive";
+// import SuperExpressive from "super-expressive";
 import Heatmap from "./Heatmap";
 // import mockData from "./mock-challenges.json";
 

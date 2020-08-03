@@ -32,7 +32,8 @@ export default async (req: NowRequest, res: NowResponse) => {
   } else {
     if (axiosResponse.hasOwnProperty("data")) {
       res.json({ ...axiosResponse.data });
+    } else {
+      res.json({ error: "API responded without data" });
     }
-    res.json({ error: "API responded without data" });
   }
 };
