@@ -27,7 +27,7 @@ export default async (req: NowRequest, res: NowResponse) => {
   console.log("decodeURIComponent(user):", decodeURIComponent(user));
 
   const [error, axiosResponse] = await fetchChallenges(
-    decodeURIComponent(user)
+    encodeURIComponent(user)
   );
 
   if (error) {
