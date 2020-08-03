@@ -18,13 +18,20 @@ export default async (req: NowRequest, res: NowResponse) => {
       const response = await axios.get(userName, {
         baseURL: USER_SERVICE_URL,
       });
-      return response;
+      return [null, response];
     } catch (e) {
-      res.json({ error: e });
+      return [e, null];
     }
   };
-  
-  const axiosResponse = await fetchUser(decodeURIComponent(user));
 
-  res.json({ ...axiosResponse.data });
+  const [error, axiosResponse] = await fetchUser(decodeURIComponent(user));
+
+  if (error) {
+    res.json({ error });
+  } else {
+    if (axiosResponse.hasOwnProperty("data")) {
+      res.json({ ...axiosResponse.data });
+    }
+    res.json({ error: "API responded without data" });
+  }
 };

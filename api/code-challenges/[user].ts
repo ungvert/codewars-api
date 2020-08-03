@@ -17,13 +17,22 @@ export default async (req: NowRequest, res: NowResponse) => {
       const response = await axios.get(
         `https://www.codewars.com/api/v1/users/${userName}/code-challenges/completed?page=0`
       );
-      return response;
+      return [null, response];
     } catch (e) {
-      res.json({ error: e });
+      return [e, null];
     }
   };
 
-  const axiosResponse = await fetchChallenges(decodeURIComponent(user));
+  const [error, axiosResponse] = await fetchChallenges(
+    decodeURIComponent(user)
+  );
 
-  res.json({ ...axiosResponse.data });
+  if (error) {
+    res.json({ error });
+  } else {
+    if (axiosResponse.hasOwnProperty("data")) {
+      res.json({ ...axiosResponse.data });
+    }
+    res.json({ error: "API responded without data" });
+  }
 };
