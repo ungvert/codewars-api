@@ -69,6 +69,8 @@ const RANKS = [
   "2 dan",
 ];
 
+const OVERALL_PROFILE_NAME = "профиля";
+
 function prepareUserData(userData: UserAPIData | null) {
   if (userData) {
     // prepare which profiles we will load
@@ -77,7 +79,10 @@ function prepareUserData(userData: UserAPIData | null) {
       data: LanguageData;
     };
     const profilesData: ProfilesRaw[] = [];
-    profilesData.push({ name: "общий", data: userData.ranks.overall });
+    profilesData.push({
+      name: OVERALL_PROFILE_NAME,
+      data: userData.ranks.overall,
+    });
     Object.entries(userData.ranks.languages).forEach(
       ([languageName, languageData]) => {
         profilesData.push({ name: languageName, data: languageData });
@@ -86,13 +91,16 @@ function prepareUserData(userData: UserAPIData | null) {
 
     // enrich\transform each profile with new calculated data
     let preparedProfiles: ProfileProps[] = [];
-    profilesData.forEach((profile) => {
-      const { name: profileName, data: profileRawData } = profile;
-      const profileData = prepareProfileData(profileRawData);
-      if (profileData) {
-        preparedProfiles.push({ profileName, ...profileData });
-      }
-    });
+    profilesData
+      .slice()
+      .sort(({ data: a }, { data: b }) => b.score - a.score)
+      .forEach((profile) => {
+        const { name: profileName, data: profileRawData } = profile;
+        const profileData = prepareProfileData(profileRawData);
+        if (profileData) {
+          preparedProfiles.push({ profileName, ...profileData });
+        }
+      });
 
     return preparedProfiles;
   }
@@ -249,4 +257,5 @@ export {
   prepareUserData,
   fetchChallenges,
   prepareUserChallengesData,
+  OVERALL_PROFILE_NAME,
 };

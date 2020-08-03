@@ -11,10 +11,6 @@ export default async (req: NowRequest, res: NowResponse) => {
     return;
   }
 
-  console.log("user:", user);
-  console.log("decodeURIComponent(user):", decodeURIComponent(user));
-  console.log("encodeURIComponent(user):", encodeURIComponent(user));
-
   const [error, axiosResponse] = await fetchUser(encodeURIComponent(user));
 
   if (error) {
@@ -23,7 +19,7 @@ export default async (req: NowRequest, res: NowResponse) => {
     if (axiosResponse.hasOwnProperty("data")) {
       res.status(200).json({ ...axiosResponse.data });
     } else {
-      res.status(500).send(new Error("API responded without data"));
+      res.status(500).send(new Error("Codewars API responded without data"));
     }
   }
 };

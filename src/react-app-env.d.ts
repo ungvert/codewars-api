@@ -27,7 +27,7 @@ type UserAPIData = {
   name: string | null;
   // honor: number;
   // clan: string;
-  // leaderboardPosition: number;
+  leaderboardPosition: number;
   // skills: string;
   ranks: {
     overall: LanguageData;

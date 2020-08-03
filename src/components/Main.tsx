@@ -3,13 +3,13 @@ import { jsx, css } from "@emotion/core";
 import { MouseEvent, useState } from "react";
 import Typography from "@material-ui/core/Typography";
 import { Box } from "@material-ui/core";
-// import { useTheme } from "@material-ui/core/styles";
+import { useTheme } from "@material-ui/core/styles";
 import Link from "@material-ui/core/Link";
 import UsernameForm from "./UsernameForm";
-import Profile from "./Profile";
-// import SuperExpressive from "super-expressive";
+import ProfileProgress from "./ProfileProgress";
+import ProfileIntro from "./ProfileIntro";
+
 import Heatmap from "./Heatmap";
-// import mockData from "./mock-challenges.json";
 
 import {
   fetchUser,
@@ -19,6 +19,7 @@ import {
 } from "../utils/getData";
 
 function Main() {
+  const theme = useTheme();
   const [data, setData] = useState<AppData>({
     userApiData: null,
     challengesData: null,
@@ -45,8 +46,6 @@ function Main() {
       string | null,
       UserAPIData | null
     ];
-
-    console.log("fetchingErrorUser, dataUser", fetchingErrorUser, dataUser);
 
     const [
       fetchingErrorChallenges,
@@ -111,31 +110,49 @@ function Main() {
       {!Boolean(userName) && <InputExample />}
 
       <Box mb={8} mx={3} />
+
+      {data.userApiData && (
+        <ProfileIntro
+          username={data.userApiData.username}
+          leaderboardPosition={data.userApiData.leaderboardPosition}
+        />
+      )}
+
       {data.preparedChallengesData && (
-        <Box
-          display="flex"
-          // justifyContent="flex-end"
-          // alignItems="center"
-          alignItems="flex-end"
-          flexDirection="column"
-          css={css`
-            overflow: hidden;
-          `}
-        >
-          <Heatmap
-            // width={256}
-            // height={128}
-            width={722}
-            height={112}
-            binData={data.preparedChallengesData}
-            // events={true}
-          />
+        <Box>
+          <Typography variant="h5" component="h5">
+            Активность
+          </Typography>
+
+          <Box
+            display="flex"
+            // justifyContent="flex-end"
+            // alignItems="center"
+            // alignItems="flex-start"
+            flexDirection="column"
+            css={css`
+              overflow: hidden;
+              align-items: flex-end;
+              ${theme.breakpoints.up("md")} {
+                align-items: flex-start;
+              }
+            `}
+          >
+            <Heatmap
+              // width={256}
+              // height={128}
+              width={722}
+              height={112}
+              binData={data.preparedChallengesData}
+              // events={true}
+            />
+          </Box>
         </Box>
       )}
 
       {data.preparedUserData &&
         data.preparedUserData.map((props) => (
-          <Profile key={props.profileName} {...props} />
+          <ProfileProgress key={props.profileName} {...props} />
         ))}
     </Box>
   );

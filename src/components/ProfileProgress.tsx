@@ -13,6 +13,8 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
+import { OVERALL_PROFILE_NAME } from "../utils/getData";
+
 const useStyles = makeStyles({
   table: {
     maxWidth: 420,
@@ -53,7 +55,7 @@ function SimpleTable({ rows }: SimpleTableProps) {
   );
 }
 
-function Profile({
+function ProfileProgress({
   profileName,
   rank,
   rankNext,
@@ -66,7 +68,9 @@ function Profile({
   return (
     <Box mt={5} mb={4}>
       <Typography variant="h5" component="h2">
-        Уровень {profileName}
+        {profileName === OVERALL_PROFILE_NAME
+          ? "Общий уровень профиля"
+          : profileName}
       </Typography>
 
       <Box display="flex" alignItems="center" my={2}>
@@ -98,7 +102,11 @@ function Profile({
 
         <Box my={1}>
           <Typography variant="h6" component="p">
-            Чтобы повысить уровень {profileName} нужно решить:
+            Чтобы повысить
+            {profileName === OVERALL_PROFILE_NAME
+              ? " общий уровень профиля "
+              : ` уровень в языке ${profileName} `}
+            нужно решить:
           </Typography>
         </Box>
 
@@ -110,4 +118,4 @@ function Profile({
   );
 }
 
-export default Profile;
+export default ProfileProgress;
