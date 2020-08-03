@@ -7,7 +7,7 @@ export default async (req: NowRequest, res: NowResponse) => {
   } = req;
 
   if (Array.isArray(user)) {
-    res.json({ error: "Arrays as parameter not supported" });
+    res.status(500).send(new Error("Arrays as parameter not supported"));
     return;
   }
 
@@ -22,6 +22,9 @@ export default async (req: NowRequest, res: NowResponse) => {
       return [e, null];
     }
   };
+
+  console.log("user:", user);
+  console.log("decodeURIComponent(user):", decodeURIComponent(user));
 
   const [error, axiosResponse] = await fetchChallenges(
     decodeURIComponent(user)
